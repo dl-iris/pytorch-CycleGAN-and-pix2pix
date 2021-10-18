@@ -24,6 +24,26 @@ class BaseModel(ABC):
         -- <modify_commandline_options>:    (optionally) add model-specific options and set default options.
     """
 
+    @staticmethod
+    def get_net_by_netG(opt):
+        netG = opt.netG
+        output_nc = opt.output_nc
+        input_nc = 3
+        ngf = 64
+        use_dropout = True
+        norm_layer = get_norm_layer(norm_type=opt.norm)
+        if netG == 'resnet_9blocks':
+            net = ResnetGenerator(input_nc, output_nc, ngf, norm_layer=norm_layer, use_dropout=use_dropout, n_blocks=9)
+        elif netG == 'resnet_6blocks':
+            net = ResnetGenerator(input_nc, output_nc, ngf, norm_layer=norm_layer, use_dropout=use_dropout, n_blocks=6)
+        elif netG == 'unet_128':
+            net = UnetGenerator(input_nc, output_nc, 7, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
+        elif netG == 'unet_256':
+            net = UnetGenerator(input_nc, output_nc, 8, ngf, norm_layer=norm_layer, use_dropout=use_dropout)
+        else:
+            raise NotImplementedError('Generator model name [%s] is not recognized' % netG)
+        return net
+
     def __init__(self, opt):
         """Initialize the BaseModel class.
 
