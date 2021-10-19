@@ -19,7 +19,7 @@ See our template model class 'template_model.py' for more details.
 """
 
 import importlib
-from models.base_model import BaseModel
+from .base_model import BaseModel
 
 
 def find_model_using_name(model_name):
@@ -65,3 +65,11 @@ def create_model(opt):
     instance = model(opt)
     print("model [%s] was created" % type(instance).__name__)
     return instance
+
+
+__all__ = [
+    'BaseModel',
+    'get_option_setter',
+    'create_model',
+    'find_model_using_name'
+]
